@@ -86,3 +86,5 @@ def index():
     wordoftheday = get_secret()
     todaystime = query_time()
     return render_template('index.html', wordoftheday=wordoftheday, time=todaystime, ip=ipinfo)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001)
