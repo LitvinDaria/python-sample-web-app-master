@@ -48,4 +48,3 @@ jobs:
         with:
           name: ffuf-results
           path: /app/ffuf_results.json
-доступно контекстное меню
