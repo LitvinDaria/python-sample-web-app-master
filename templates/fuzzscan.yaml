@@ -1,0 +1,51 @@
+name: Fuzzing
+ 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+ 
+    services:
+      docker:
+        image: docker
+        options: --privileged
+ 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+ 
+      - name: Build Docker image for web app
+        run: docker build -t web-app .
+ 
+      - name: Create Docker network
+        run: docker network create webapp-network
+ 
+      - name: Stop and remove previous container
+        run: |
+          docker stop web-app || true
+          docker rm web-app || true
+ 
+      - name: Run web app
+        run: docker run -d --name web-app --network webapp-network web-app
+ 
+      - name: Run FFUF fuzzing
+        run: docker exec web-app /bin/sh -c "
+          ./ffuf/ffuf -w /app/wordlist.txt -u http://web-app:5012 -o /app/ffuf_results.json && \
+          ls -l /app && cat /app/ffuf_results.json || echo 'No results found'"
+ 
+      - name: Upload FFUF results
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffuf-results
+          path: /app/ffuf_results.json
+доступно контекстное меню
