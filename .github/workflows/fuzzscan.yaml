@@ -38,7 +38,7 @@ jobs:
       - name: Run web app_fuzzing
         run: docker run -d --name web-app --network webapp-network web-app
  
-      - name: Run FFUF fuzzing for app
+      - name: Run FFUF fuzzing for app_fuzzing
         run: docker exec web-app /bin/sh -c "
           ./ffuf/ffuf -w /app_fuzzing/wordlist.txt -u http://web-app:5001 -o /app_fuzzing/ffuf_results.json && \
           ls -l /app_fuzzing && cat /app_fuzzing/ffuf_results.json || echo 'No results found'" 

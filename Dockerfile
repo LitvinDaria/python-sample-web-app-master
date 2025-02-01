@@ -11,8 +11,15 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     git \
     wget \
+    build-essential \
     && pip3 install --no-cache-dir -r requirements.txt
 
+RUN wget https://golang.org/dl/go1.17.11.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.17.11.linux-amd64.tar.gz && \
+    rm go1.17.11.linux-amd64.tar.gz
+ 
+ENV PATH="/usr/local/go/bin:${PATH}"
+ 
 # Устанавливаем FFUF
 RUN git clone https://github.com/ffuf/ffuf && cd ffuf && go build
  
