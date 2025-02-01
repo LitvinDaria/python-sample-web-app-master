@@ -16,8 +16,9 @@ RUN apt-get update && apt-get install -y \
     findutils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-    && pip3 install --no-cache-dir -r requirements.txt
-
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+    
 RUN wget https://golang.org/dl/go1.17.11.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.17.11.linux-amd64.tar.gz && \
     rm go1.17.11.linux-amd64.tar.gz
