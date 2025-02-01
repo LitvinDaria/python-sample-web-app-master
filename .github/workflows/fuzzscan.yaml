@@ -1,4 +1,4 @@
-name: Fuzzing
+name: FuzzingScan
  
 on:
   push:
@@ -38,10 +38,10 @@ jobs:
       - name: Run web app
         run: docker run -d --name web-app --network webapp-network web-app
  
-      - name: Run FFUF fuzzing
+      - name: Run FFUF fuzzing for app
         run: docker exec web-app /bin/sh -c "
           ./ffuf/ffuf -w /app/wordlist.txt -u http://web-app:5001 -o /app/ffuf_results.json && \
-          ls -l /app && cat /app/ffuf_results.json || echo 'No results found'"
+          ls -l /app && cat /app/ffuf_results.json || echo 'No results found'" 
  
       - name: Upload FFUF results
         uses: actions/upload-artifact@v4
