@@ -27,6 +27,7 @@ ENV PATH="/usr/local/go/bin:${PATH}"
  
 # Устанавливаем FFUF
 RUN git clone https://github.com/ffuf/ffuf && cd ffuf && go build
- 
+# Проверка наличия команды ls
+RUN which ls && ls --version
 # Запускаем приложение
 CMD ["flask", "run", "--host=0.0.0.0", "--port=5001"]
