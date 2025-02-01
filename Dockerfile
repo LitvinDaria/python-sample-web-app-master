@@ -1,7 +1,7 @@
 FROM debian:bullseye-slim
  
 # Устанавливаем рабочую директорию
-WORKDIR /app
+WORKDIR /app_fuzzing
  
 # Копируем все файлы в рабочую директорию
 COPY . .

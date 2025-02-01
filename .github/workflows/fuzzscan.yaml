@@ -24,7 +24,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
  
-      - name: Build Docker image for web app
+      - name: Build Docker image for web app_fuzzing
         run: docker build -t web-app .
  
       - name: Create Docker network
@@ -35,16 +35,16 @@ jobs:
           docker stop web-app || true
           docker rm web-app || true
  
-      - name: Run web app
+      - name: Run web app_fuzzing
         run: docker run -d --name web-app --network webapp-network web-app
  
       - name: Run FFUF fuzzing for app
         run: docker exec web-app /bin/sh -c "
-          ./ffuf/ffuf -w /app/wordlist.txt -u http://web-app:5001 -o /app/ffuf_results.json && \
-          ls -l /app && cat /app/ffuf_results.json || echo 'No results found'" 
+          ./ffuf/ffuf -w /app_fuzzing/wordlist.txt -u http://web-app:5001 -o /app_fuzzing/ffuf_results.json && \
+          ls -l /app_fuzzing && cat /app_fuzzing/ffuf_results.json || echo 'No results found'" 
  
       - name: Upload FFUF results
         uses: actions/upload-artifact@v4
         with:
           name: ffuf-results
-          path: /app/ffuf_results.json
+          path: /app_fuzzing/ffuf_results.json
